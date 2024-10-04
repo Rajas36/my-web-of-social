@@ -1,0 +1,74 @@
+html {
+  height: 100%;
+  width: 100%;
+}
+body {
+  background: radial-gradient(circle at 10% 20%, rgb(0, 0, 0) 0%, rgb(64, 64, 64) 90.2%);
+  color:white;
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+.pagebanner{background: hsla(205, 46%, 10%, 1);
+
+  background: linear-gradient(90deg, hsla(205, 46%, 10%, 1) 0%, hsla(191, 28%, 23%, 1) 50%, hsla(207, 41%, 27%, 1) 100%);
+
+  background: -moz-linear-gradient(90deg, hsla(205, 46%, 10%, 1) 0%, hsla(191, 28%, 23%, 1) 50%, hsla(207, 41%, 27%, 1) 100%);
+
+  background: -webkit-linear-gradient(90deg, hsla(205, 46%, 10%, 1) 0%, hsla(191, 28%, 23%, 1) 50%, hsla(207, 41%, 27%, 1) 100%);
+
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#0E1C26", endColorstr="#2A454B", GradientType=1 );
+ 
+  width: 650px;
+  margin-top: 100px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 25px 5px black;
+  margin:auto;
+           
+
+h1 {text-align: center;
+}
+
+.itsmypfp{border-radius: 100px;height:200px ;width:200px  ;margin-left:200px}
+  .men{
+              width: 30px;
+              height: 5px;
+              background-color: #000000;
+              margin: 6px 0;
+            }
+h2{text-align: center;}
+.aboutme{padding: 0px 10px 0px 10px;text-align: center;}
+
+            
+            
+            
+            .mypro{display:flex;
+                 color: grey;
+         height: 40px;
+         width: 280px;
+          ;align-items:center;
+        }
+
+
+
+
+
+            
+.connections{display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      text-align: initial;
+  
+            }
+            
+
+
+   .con{ height: 50px;
+       width: 260px;
+       border: 2px solid hsla(0, 0%, 100%, 0.07);
+       border-radius: 10px;
+       margin: 30px 30px  10px;
+       display: flex;
+       align-items: center;}
+
+            
+.socialing{height:50px ;width:50px;border-radius:10%;}
+.link{color: grey;}
