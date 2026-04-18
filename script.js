@@ -23,6 +23,19 @@
     if (yearEl) yearEl.textContent = new Date().getFullYear();
   }
 
+  // ── Dynamic Age ──
+  const ageEl = document.getElementById('dynamicAge');
+  if (ageEl) {
+    const birthDate = new Date(2006, 0, 1);
+    const now = new Date();
+    let age = now.getFullYear() - birthDate.getFullYear();
+    if (now.getMonth() < birthDate.getMonth() ||
+        (now.getMonth() === birthDate.getMonth() && now.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    ageEl.textContent = age;
+  }
+
   updateClock();
   setYear();
   setInterval(updateClock, 1000);
