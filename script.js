@@ -1,52 +1,125 @@
 /**
  * SIGNAL TERMINAL — Script
- * Handles live clock, staggered entry animations,
- * and interactive micro-behaviors.
+ * All dynamic, all timeless. Nothing hardcoded that ages.
  */
 
 (function () {
   'use strict';
 
-  // ── Live Clock ──
-  const timeEl = document.getElementById('liveTime');
-  const yearEl = document.getElementById('footerYear');
+  // ═══════════════════════════════════════
+  //  CONSTANTS
+  // ═══════════════════════════════════════
+  var BIRTH_YEAR = 2006;
+  var BIRTH_MONTH = 0; // January (0-indexed)
+  var BIRTH_DAY = 1;
+  var GITHUB_USERNAME = 'Rajas36';
 
+  // ═══════════════════════════════════════
+  //  DOM REFS
+  // ═══════════════════════════════════════
+  var timeEl = document.getElementById('liveTime');
+  var yearEl = document.getElementById('footerYear');
+  var ageEl = document.getElementById('dynamicAge');
+  var greetingEl = document.getElementById('greeting');
+  var ghReposEl = document.getElementById('ghRepos');
+
+  // ═══════════════════════════════════════
+  //  LIVE CLOCK — updates every second
+  // ═══════════════════════════════════════
   function updateClock() {
-    const now = new Date();
-    const h = String(now.getHours()).padStart(2, '0');
-    const m = String(now.getMinutes()).padStart(2, '0');
-    const s = String(now.getSeconds()).padStart(2, '0');
+    var now = new Date();
+    var h = String(now.getHours()).padStart(2, '0');
+    var m = String(now.getMinutes()).padStart(2, '0');
+    var s = String(now.getSeconds()).padStart(2, '0');
     if (timeEl) timeEl.textContent = h + ':' + m + ':' + s;
   }
 
+  // ═══════════════════════════════════════
+  //  DYNAMIC YEAR — footer always current
+  // ═══════════════════════════════════════
   function setYear() {
     if (yearEl) yearEl.textContent = new Date().getFullYear();
   }
 
-  // ── Dynamic Age ──
-  const ageEl = document.getElementById('dynamicAge');
-  if (ageEl) {
-    const birthDate = new Date(2006, 0, 1);
-    const now = new Date();
-    let age = now.getFullYear() - birthDate.getFullYear();
-    if (now.getMonth() < birthDate.getMonth() ||
-        (now.getMonth() === birthDate.getMonth() && now.getDate() < birthDate.getDate())) {
+  // ═══════════════════════════════════════
+  //  DYNAMIC AGE — calculated from DOB
+  // ═══════════════════════════════════════
+  function setAge() {
+    if (!ageEl) return;
+    var now = new Date();
+    var age = now.getFullYear() - BIRTH_YEAR;
+    if (now.getMonth() < BIRTH_MONTH ||
+        (now.getMonth() === BIRTH_MONTH && now.getDate() < BIRTH_DAY)) {
       age--;
     }
     ageEl.textContent = age;
   }
 
-  updateClock();
+  // ═══════════════════════════════════════
+  //  TIME-AWARE GREETING
+  //  Changes based on visitor's local time
+  // ═══════════════════════════════════════
+  function setGreeting() {
+    if (!greetingEl) return;
+    var hour = new Date().getHours();
+    var msg;
+    if (hour >= 5 && hour < 12) {
+      msg = 'Morning Signal';
+    } else if (hour >= 12 && hour < 17) {
+      msg = 'Afternoon Signal';
+    } else if (hour >= 17 && hour < 21) {
+      msg = 'Evening Signal';
+    } else {
+      msg = 'Night Signal';
+    }
+    greetingEl.textContent = msg;
+  }
+
+  // ═══════════════════════════════════════
+  //  GITHUB LIVE STATS — public API, no auth
+  //  Fetches repo count. Fails silently.
+  // ═══════════════════════════════════════
+  function fetchGitHubStats() {
+    if (!ghReposEl) return;
+
+    fetch('https://api.github.com/users/' + GITHUB_USERNAME)
+      .then(function (res) {
+        if (!res.ok) throw new Error('GitHub API error');
+        return res.json();
+      })
+      .then(function (data) {
+        if (typeof data.public_repos === 'number') {
+          ghReposEl.textContent = data.public_repos;
+        }
+      })
+      .catch(function () {
+        // Fail silently — keep the dash placeholder
+      });
+  }
+
+  // ═══════════════════════════════════════
+  //  INIT — fire everything
+  // ═══════════════════════════════════════
+  setAge();
   setYear();
+  setGreeting();
+  updateClock();
+  fetchGitHubStats();
+
   setInterval(updateClock, 1000);
 
-  // ── Intersection Observer for scroll-triggered animations ──
-  const observerOptions = {
+  // Refresh greeting every 10 minutes (catches hour boundaries)
+  setInterval(setGreeting, 600000);
+
+  // ═══════════════════════════════════════
+  //  SCROLL ANIMATIONS
+  // ═══════════════════════════════════════
+  var observerOptions = {
     threshold: 0.15,
     rootMargin: '0px 0px -40px 0px'
   };
 
-  const observer = new IntersectionObserver(function (entries) {
+  var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
         entry.target.classList.add('animate-in--visible');
@@ -55,12 +128,13 @@
     });
   }, observerOptions);
 
-  // Observe all animatable elements
   document.querySelectorAll('.animate-in').forEach(function (el) {
     observer.observe(el);
   });
 
-  // ── Keyboard navigation enhancement ──
+  // ═══════════════════════════════════════
+  //  KEYBOARD NAVIGATION
+  // ═══════════════════════════════════════
   document.querySelectorAll('.social-link, .project-card').forEach(function (el) {
     el.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -70,21 +144,25 @@
     });
   });
 
-  // ── Subtle parallax on identity avatar ──
-  const avatarFrame = document.querySelector('.identity__avatar-frame');
+  // ═══════════════════════════════════════
+  //  AVATAR PARALLAX
+  // ═══════════════════════════════════════
+  var avatarFrame = document.querySelector('.identity__avatar-frame');
   if (avatarFrame && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
     document.addEventListener('mousemove', function (e) {
-      const rect = avatarFrame.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const dx = (e.clientX - centerX) / window.innerWidth;
-      const dy = (e.clientY - centerY) / window.innerHeight;
+      var rect = avatarFrame.getBoundingClientRect();
+      var centerX = rect.left + rect.width / 2;
+      var centerY = rect.top + rect.height / 2;
+      var dx = (e.clientX - centerX) / window.innerWidth;
+      var dy = (e.clientY - centerY) / window.innerHeight;
       avatarFrame.style.transform =
         'translate(' + (dx * 6).toFixed(2) + 'px, ' + (dy * 6).toFixed(2) + 'px)';
     });
   }
 
-  // ── Console signature ──
+  // ═══════════════════════════════════════
+  //  CONSOLE SIGNATURE
+  // ═══════════════════════════════════════
   console.log(
     '%c◈ SIGNAL TERMINAL %c— Rajas Naik',
     'color: #e8a623; font-weight: bold; font-size: 14px;',

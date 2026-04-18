@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Rajas Naik — 18-year-old BAF student. Rockets, mechanics, robotics, electronics. Building things that move.">
+    <meta name="description" content="Rajas Naik — Student, engineer, builder. Rockets, mechanics, robotics, electronics.">
     <title>Rajas Naik — Signal</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◈</text></svg>">
@@ -16,7 +16,7 @@
     <header class="status-bar animate-in" role="banner">
         <div class="status-bar__signal">
             <div class="status-bar__dot" aria-label="Online status: active"></div>
-            <span>Signal Active</span>
+            <span id="greeting">Signal Active</span>
         </div>
         <div class="status-bar__time" id="liveTime" aria-live="polite">00:00:00</div>
     </header>
@@ -99,7 +99,7 @@
                 </div>
                 <div class="social-link__info">
                     <div class="social-link__name">GitHub</div>
-                    <div class="social-link__handle">@Rajas36</div>
+                    <div class="social-link__handle">@Rajas36 · <span id="ghRepos">—</span> repos</div>
                 </div>
                 <div class="social-link__action">
                     <span>Follow</span>
