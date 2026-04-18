@@ -10,8 +10,8 @@
   //  CONSTANTS
   // ═══════════════════════════════════════
   var BIRTH_YEAR = 2006;
-  var BIRTH_MONTH = 0; // January (0-indexed)
-  var BIRTH_DAY = 1;
+  var BIRTH_MONTH = 11; // January (0-indexed)
+  var BIRTH_DAY = 19;
   var GITHUB_USERNAME = 'Rajas36';
 
   // ═══════════════════════════════════════
